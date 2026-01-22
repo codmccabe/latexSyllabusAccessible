@@ -142,7 +142,11 @@ lualatex -interaction=nonstopmode syllabus.tex
 
 ### `accessible-syllabus.sty`
 - Reusable LaTeX package with all custom commands and environments
-- Defines accessibility-tagged structures (headings, paragraphs, lists)
+- **Provides convenient commands** that handle tagging automatically:
+  - `\syllabussection{Title}` — Create H2 headings
+  - `\syllabussubsection{Title}` — Create H3 subheadings
+  - `\begin{taggedparagraph}...\end{taggedparagraph}` — Tag paragraphs
+  - `\begin{taggeditemize}...\end{taggeditemize}` — Tag lists
 - Can be included in other syllabus projects
 - **Do not edit** unless extending functionality
 
@@ -171,21 +175,36 @@ lualatex -interaction=nonstopmode syllabus.tex
 - Hyperlinked email addresses
 - Proper list tagging for screen readers
 
-### Built-in Tagged Environments
-```tex
-\begin{taggedstructure}{H2}     % Create H2 heading
-\section*{My Section}
-\end{taggedstructure}
+### Using the Stylesheet Commands
 
-\begin{taggedparagraph}         % Tag paragraph content
-Your paragraph text here
+Instead of manually writing raw `taggedstructure` environments, use the convenience commands from `accessible-syllabus.sty`:
+
+**For Headings:**
+```tex
+\syllabussection{Course Information}        % Creates H2 heading
+
+\syllabussubsection{Course Details}         % Creates H3 subheading
+```
+
+**For Content:**
+```tex
+\begin{taggedparagraph}
+Your paragraph text here. This is automatically tagged for accessibility.
 \end{taggedparagraph}
 
-\begin{taggeditemize}           % Tag bulleted lists
-\item Item 1
-\item Item 2
+\begin{taggeditemize}
+\item Bullet point 1
+\item Bullet point 2
+\item Bullet point 3
 \end{taggeditemize}
+
+\begin{taggedenumerate}
+\item Numbered item 1
+\item Numbered item 2
+\end{taggedenumerate}
 ```
+
+See the main syllabus document for real-world examples of how these commands are used together.
 
 ## Creating Multiple Syllabi
 
@@ -245,18 +264,23 @@ git commit -m "Stop tracking PDFs"
 
 ### Extending the Package
 
-To add custom commands to `accessible-syllabus.sty`, define them as:
+To add custom commands to `accessible-syllabus.sty`, use the convenience commands:
 
 ```tex
 \newcommand{\mygradingscale}[1]{
-  \begin{taggedstructure}{H3}
-  \subsection*{Grading Scale}
-  \end{taggedstructure}
+  \syllabussubsection{Grading Scale}
   \begin{taggedparagraph}
   #1
   \end{taggedparagraph}
 }
 ```
+
+Then use in your main document:
+```tex
+\mygradingscale{A: 90-100\%, B: 80-89\%, C: 70-79\%, ...}
+```
+
+The stylesheet commands (`\syllabussection`, `\syllabussubsection`, `\begin{taggedparagraph}`, etc.) automatically handle all the accessibility tagging internally, so you don't need to worry about `\begin{taggedstructure}{H2}` and similar raw commands.
 
 ### Multi-semester Templates
 
