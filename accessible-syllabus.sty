@@ -1,0 +1,257 @@
+% accessible-syllabus.sty
+% A reusable LaTeX package for creating Ally-accessible syllabi
+% Version 1.0
+% Usage: \usepackage{accessible-syllabus}
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{accessible-syllabus}[2026/01/22 Accessible Syllabus Package]
+
+% ============================================================================
+% REQUIRED PACKAGES
+% ============================================================================
+
+% Font and encoding
+\RequirePackage[T1]{fontenc}
+% Note: inputenc is not compatible with lualatex/xetex; UTF-8 is default
+
+% Page formatting
+\RequirePackage[margin=1in]{geometry}
+\RequirePackage{fancyhdr}
+\RequirePackage{babel}
+
+% Accessibility: semantic tagging for PDF
+\RequirePackage{tagpdf}
+\tagpdfsetup{activate-all=true}
+
+% Hyperlinks with accessibility
+\RequirePackage[
+  bookmarks=true,
+  bookmarksnumbered=false,
+  bookmarksopen=false,
+  breaklinks=true,
+  pdfborder={0 0 0},
+  colorlinks=false
+]{hyperref}
+
+% Typography improvements
+\RequirePackage[all]{nowidow}
+
+% ============================================================================
+% PACKAGE OPTIONS
+% ============================================================================
+
+\newif\if@draft
+\newif\if@showheaders
+
+\DeclareOption{draft}{\@drafttrue}
+\DeclareOption{showheaders}{\@showheaderstrue}
+\DeclareOption*{\PassOptionsToPackage{\CurrentOption}{babel}}
+
+\ProcessOptions\relax
+
+% ============================================================================
+% PAGE STYLE SETUP
+% ============================================================================
+
+\pagestyle{fancy}
+\fancyhf{}
+
+% Header/Footer commands for easy customization
+\newcommand{\syllabuscourseheader}[1]{%
+  \lhead{#1}
+}
+
+\newcommand{\syllabusschoolheader}[1]{%
+  \rhead{#1}
+}
+
+\newcommand{\syllabuspagefooter}{%
+  \cfoot{Page \thepage}
+}
+
+% Default headers (can be overridden by document)
+\syllabuscourseheader{}
+\syllabusschoolheader{}
+\syllabuspagefooter
+
+% ============================================================================
+% TAGGED ENVIRONMENTS
+% ============================================================================
+
+% Heading structures for accessibility
+\newenvironment{taggedstructure}[1]{%
+  \tagstructbegin{tag=#1}%
+}{%
+  \tagstructend%
+}
+
+% Tagged paragraph environment
+\newenvironment{taggedparagraph}{%
+  \tagstructbegin{tag=P}%
+}{%
+  \tagstructend%
+}
+
+% List environments with tagging
+\newenvironment{taggeditemize}{%
+  \tagstructbegin{tag=L}%
+  \begin{itemize}%
+}{%
+  \end{itemize}%
+  \tagstructend%
+}
+
+\newenvironment{taggedenumerate}{%
+  \tagstructbegin{tag=L}%
+  \begin{enumerate}%
+}{%
+  \end{enumerate}%
+  \tagstructend%
+}
+
+% ============================================================================
+% SECTION COMMANDS WITH AUTOMATIC TAGGING
+% ============================================================================
+
+% Main title command
+\newcommand{\syllabustitle}[3]{%
+  \begin{taggedstructure}{H1}
+    \centering
+    \Large\bfseries #1
+    
+    \normalsize\mdseries #2
+    
+    \small #3
+  \end{taggedstructure}
+  \vspace{0.5in}
+}
+
+% Major section (H2)
+\newcommand{\syllabussection}[1]{%
+  \begin{taggedstructure}{H2}
+    \section*{#1}
+  \end{taggedstructure}
+}
+
+% Subsection (H3)
+\newcommand{\syllabussubsection}[1]{%
+  \begin{taggedstructure}{H3}
+    \subsection*{#1}
+  \end{taggedstructure}
+}
+
+% Subsubsection (H4)
+\newcommand{\syllabussubsubsection}[1]{%
+  \begin{taggedstructure}{H4}
+    \subsubsection*{#1}
+  \end{taggedstructure}
+}
+
+% ============================================================================
+% COMMON SYLLABUS ENVIRONMENTS
+% ============================================================================
+
+% Course information block
+\newenvironment{courseinfo}{%
+  \begin{taggedparagraph}
+  \begin{taggeditemize}
+}{%
+  \end{taggeditemize}
+  \end{taggedparagraph}
+}
+
+% Learning outcomes list
+\newenvironment{learningoutcomes}{%
+  \begin{taggedparagraph}
+  Upon successful completion of this course, students will be able to:
+  \end{taggedparagraph}
+  \begin{taggedenumerate}
+}{%
+  \end{taggedenumerate}
+}
+
+% Grading components
+\newenvironment{gradecomponents}{%
+  \begin{taggedparagraph}
+  Your final grade is determined by the following components:
+  \end{taggedparagraph}
+  \begin{taggedenumerate}
+}{%
+  \end{taggedenumerate}
+}
+
+% ============================================================================
+% UTILITY COMMANDS
+% ============================================================================
+
+% Inline metadata (label and value)
+\newcommand{\syllabusmeta}[2]{%
+  \item \textbf{#1:} #2%
+}
+
+% Contact information
+\newcommand{\instructorcontact}[4]{%
+  \begin{courseinfo}
+    \syllabusmeta{Instructor}{#1}
+    \syllabusmeta{Email}{\href{mailto:#2}{#2}}
+    \syllabusmeta{Office}{#3}
+    \syllabusmeta{Phone}{#4}
+  \end{courseinfo}
+}
+
+% Office hours block
+\newcommand{\officehours}[2]{%
+  \begin{taggedparagraph}
+    Held in #1:
+    \begin{taggeditemize}
+      #2
+    \end{taggeditemize}
+  \end{taggedparagraph}
+}
+
+% Horizontal rule for visual separation
+\newcommand{\syllabusrule}{%
+  \vspace{0.25in}
+  \noindent\rule{\textwidth}{0.5pt}
+  \vspace{0.25in}
+}
+
+% ============================================================================
+% PDF METADATA SETUP
+% ============================================================================
+
+% Command to set PDF metadata
+\newcommand{\setpdfmetadata}[4]{%
+  \hypersetup{
+    pdftitle={#1},
+    pdfauthor={#2},
+    pdfsubject={#3},
+    pdfkeywords={#4}
+  }%
+}
+
+% ============================================================================
+% DRAFT MODE
+% ============================================================================
+
+\if@draft
+  \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+  \newcommand{\draftmark}{%
+    \begin{center}
+      \Large\textbf{\color{red}DRAFT MODE}
+    \end{center}
+  }
+\else
+  \newcommand{\draftmark}{}
+\fi
+
+% ============================================================================
+% COMPATIBILITY NOTES
+% ============================================================================
+
+% Ensure compatibility with standard document classes
+\AtBeginDocument{%
+  \if@showheaders
+    \PackageInfo{accessible-syllabus}{Headers enabled}
+  \fi
+}

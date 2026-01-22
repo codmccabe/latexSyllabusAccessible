@@ -1,0 +1,42 @@
+# LaTeX build artifacts
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.synctex(busy)
+*.toc
+*.lof
+*.lot
+*.bbl
+*.blg
+*.nav
+*.snm
+*.vrb
+*.makefile
+
+# PDF output - currently tracked for convenience (uncomment to ignore)
+# *.pdf
+
+# Editor and IDE files
+.vscode/
+.texpadtmp/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Build directories
+build/
+dist/
+*.egg-info/
+
+# TeXworks backup files
+*.bak
+
+# Miscellaneous
+.gitignore~
+.project
+.pydevproject
