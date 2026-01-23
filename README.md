@@ -147,6 +147,7 @@ lualatex -interaction=nonstopmode syllabus.tex
   - `\syllabussubsection{Title}` — Create H3 subheadings
   - `\begin{taggedparagraph}...\end{taggedparagraph}` — Tag paragraphs
   - `\begin{taggeditemize}...\end{taggeditemize}` — Tag lists
+  - `\begin{topicaloutline}...\end{topicaloutline}` — Tag a topical outline (week-by-week or topic list)
 - Can be included in other syllabus projects
 - **Do not edit** unless extending functionality
 
@@ -202,6 +203,13 @@ Your paragraph text here. This is automatically tagged for accessibility.
 \item Numbered item 1
 \item Numbered item 2
 \end{taggedenumerate}
+
+```tex
+\begin{topicaloutline}
+\item Week 1: Intro to sets
+\item Week 2: Operations with signed numbers
+\end{topicaloutline}
+```
 ```
 
 See the main syllabus document for real-world examples of how these commands are used together.
