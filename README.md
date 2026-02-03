@@ -2,8 +2,11 @@
 
 Create fully accessible, Ally-compliant PDF syllabi directly from LaTeX without requiring manual PDF tag editing in Acrobat.
 
+Extra things to think about...
 * [Overleaf Project using pdflatex](https://www.overleaf.com/read/cbqcqtsnpbkb#247927)
 * [Overleaf Project using LuaTex](https://www.overleaf.com/read/wtffzwyzbvnm#d0c6b9)
+* Run ```kpsewhich tagpdf.sty ``` to unsure you can compile locally.
+    * ```texlive-latex-extra``` will be needed.
 
 ## Overview
 
