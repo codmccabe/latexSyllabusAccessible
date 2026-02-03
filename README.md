@@ -2,6 +2,9 @@
 
 Create fully accessible, Ally-compliant PDF syllabi directly from LaTeX without requiring manual PDF tag editing in Acrobat.
 
+* [Overleaf Project using pdflatex](https://www.overleaf.com/read/cbqcqtsnpbkb#247927)
+* [Overleaf Project using LuaTex](https://www.overleaf.com/read/wtffzwyzbvnm#d0c6b9)
+
 ## Overview
 
 This project provides a reusable LaTeX system for generating accessible course syllabi with:
